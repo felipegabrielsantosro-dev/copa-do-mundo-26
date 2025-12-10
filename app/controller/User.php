@@ -38,8 +38,7 @@ class User extends Base
             $rg = $_POST['rg'];
             $data_nascimento = $_POST['data_nascimento'];
             $senha = $_POST['senha'];
-            
-            
+                        
             $FieldsAndValues = [
                 'nome' => $nome,
                 'sobrenome' => $sobrenome,
@@ -95,8 +94,7 @@ class User extends Base
           1 => 'nome',  
           2 => 'sobrenome',  
           3 => 'cpf',  
-          4 => 'rg',  
-          5 => 'data_nascimento'
+          4 => 'rg', 
         ];
         #Capturamos o nome do campo a ser odernado.
         $orderField = $fields[$order];
@@ -107,8 +105,7 @@ class User extends Base
             $query->where('nome', 'ilike', "%{$term}%", 'or')
             ->where('sobrenome', 'ilike', "%{$term}%", 'or')
             ->where('cpf', 'ilike', "%{$term}%", 'or')
-            ->where('rg', 'ilike', "%{$term}%", 'or')
-            ->where('data_nascimento', 'ilike', "%{$term}%");
+            ->where('rg', 'ilike', "%{$term}%");
         }
         $users = $query
         ->order($orderField, $orderType)
@@ -122,7 +119,6 @@ class User extends Base
                 $value['sobrenome'],
                 $value['cpf'],
                 $value['rg'],
-                $value['data_nascimento'],
                 "<button class='btn btn-warning'>Editar</button>
                 <button class='btn btn-danger'>Excluir</button>"
             ];

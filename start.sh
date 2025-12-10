@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/nexify/
+cd /home/felipe/
 
 rm -R vendor/
 rm -R composer.lock
@@ -12,9 +12,9 @@ composer install --no-interaction --prefer-dist --optimize-autoloader
 composer update --no-interaction
 composer du -o
 
-PG_USER="nexify"
-PG_PASS="nexify"
-PG_DB="nexify"
+PG_USER="felipe"
+PG_PASS="felipe"
+PG_DB="felipe"
 ############################################################
 # 1) Criar usuário se não existir
 ############################################################
