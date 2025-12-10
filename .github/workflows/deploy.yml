@@ -1,0 +1,35 @@
+name: "Deploy para VPS"
+
+on:
+  push:
+    branches: 
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Baixar o código" 
+        uses: actions/checkout@v4
+
+      - name: "Copiar arquivos para VPS"
+        uses: appleboy/scp-action@v1
+        with:
+          host: "82.25.74.36"
+          username: "root"
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "."
+          target: "/home/felipe"
+        
+      - name: "Build da aplicação"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: "82.25.74.36"
+          username: "root"
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /home/felipe
+            dos2unix start.sh
+            chmod +x start.sh
+            sudo bash start.sh
+            chown -R www-data:www-data .

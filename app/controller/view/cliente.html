@@ -1,0 +1,124 @@
+{% extends "main.html" %}
+
+{% block main %}
+
+<style>
+/* ===== Tema Roxo Futurista ===== */
+body {
+    background: linear-gradient(180deg, #7a1dd8 0%, #b460ff 100%);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Header bar (faixa superior) */
+.header-bar {
+    height: 35px;
+    width: 100%;
+    background: linear-gradient(90deg, #4b0082, #7a1dd8, #b460ff);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.5);
+}
+
+/* Footer bar (faixa inferior) */
+.footer-bar {
+    height: 25px;
+    width: 100%;
+    margin-top: 40px;
+    background: linear-gradient(90deg, #4b0082, #7a1dd8, #b460ff);
+    box-shadow: 0 -3px 15px rgba(0,0,0,0.5);
+}
+
+/* Card com fundo cinza e header com gradiente */
+.card {
+    background-color: #2f2f2f; /* cinza escuro para o card */
+    color: white;
+}
+
+.card-body {
+    background-color: #3a3a3a; /* cinza mais claro para o conteúdo */
+}
+
+.card-header {
+    background: linear-gradient(90deg, #4b0082, #7a1dd8, #b460ff);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 15px;
+    border-bottom: 2px solid #b460ff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Botões Salvar e Voltar com gradiente */
+#salvar, #voltar {
+    background: linear-gradient(90deg, #4b0082, #7a1dd8, #b460ff);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+#salvar:hover, #voltar:hover {
+    background: linear-gradient(90deg, #7a1dd8, #b460ff, #4b0082);
+    color: white;
+}
+</style>
+
+<!-- Header -->
+<div class="header-bar"></div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg rounded-4">
+                <div class="card-header">
+                    <a href="/cliente/lista" id="voltar" class="btn px-4 py-2">Voltar</a>
+                </div>
+                <div class="card-body">
+                    <form class="row g-3 needs-validation"id="form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required>
+                                    <label for="nome">Nome ou nome fantasia *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Sobrenome" required>
+                                    <label for="sobrenome">Sobrenome ou razão social *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF" required>
+                                    <label for="cpf">CPF ou CNPJ *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="rg" name="rg" placeholder="RG" required>
+                                    <label for="rg">RG ou IE *</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="button" id="salvar" class="btn px-4 py-2" onclick="salvar">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer-bar"></div>
+
+{% endblock %}
+
+{% block script %}
+{% include "script.html" %}
+<script defer type="module" src="/js/cliente.js"></script>
+{% endblock %}

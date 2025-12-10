@@ -1,0 +1,128 @@
+{% extends "main.html" %}
+
+{% block main %}
+
+
+<div class="min-vh-100" style="background: linear-gradient(180deg, #5a007a, #8a2be2);">
+
+    
+    <nav class="navbar header-bar shadow-lg py-2" 
+     style="position: sticky; top: 0; z-index: 1000; height: 50px;"> <!-- define altura menor -->
+    <div class="container-fluid justify-content-center">
+        <span class="navbar-brand mb-0 h4 text-uppercase fw-bold" style="color:#fff;">
+            NEXIFY 
+        </span>
+    </div>
+</nav>
+
+
+    <div class="container my-5 pt-5"> 
+
+        <form id="form">
+            <input type="hidden" id="id" name="id">
+
+            <!-- CARD -->
+            <div class="card shadow-lg border-0 rounded-4"
+                 style="background-color:#d3d3d3; border:1px solid #b460ff; color:#000;"> <!-- fundo cinza -->
+
+               
+                <div class="card-header d-flex justify-content-between align-items-center border-0 rounded-top-4 gradient-bg">
+                    <!-- TÍTULO EM BRANCO -->
+                    <h5 class="mb-0 fw-bold text-white">
+                        <i class="fas fa-users"></i> Lista de Clientes
+                    </h5>
+
+                    <a href="/cliente/cadastro"
+                       class="btn fw-bold text-white px-4 py-2 rounded-3 shadow"
+                       style="background:linear-gradient(90deg,#8d46d3,#631f9e); border:none;">
+                        + Cadastrar
+                    </a>
+                </div>
+
+         <!-- TABELA -->
+<div class="card-body p-0" style="background-color:#ffffff;"> <!-- fundo cinza do corpo da lista -->
+    <div class="table-responsive">
+
+        <table id="tabela" class="table align-middle text-center mb-0" style="background-color:#743939; color:#000;">
+            <thead style="background: linear-gradient(90deg,#8a2be2,#a64dff,#b460ff); color:white;">
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Razão Social</th>
+                    <th>CPF/CNPJ</th>
+                    <th>RG/IE</th>
+                    <th>Email</th>
+                    <th>Celular</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody style="background-color:#d3d3d3; color:#000;"> <!-- fundo cinza das linhas -->
+                <tr>
+                    <td class="fw-bold">1</td>
+                    <td>James</td>
+                    <td>Shaqliusniu</td>
+                    <td>155.515.515-00</td>
+                    <td>157155</td>
+                    <td>jamesshaqliosliniu@gmail.com</td>
+                    <td>(69) 99345-64627</td>
+
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+
+                            
+                            <button class="btn btn-sm text-white px-3 rounded-3 shadow"
+                                    style="background:linear-gradient(90deg,#4b0082,#7a1dd8); border:none;">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+
+                            
+                            <button class="btn btn-sm text-white px-3 rounded-3 shadow"
+                                    style="background:linear-gradient(90deg,#b0006d,#ff1f8f); border:none;"
+                                    onclick="deletar(1);">
+                                <i class="fas fa-trash"></i> Excluir
+                            </button>
+
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+
+<div class="w-100"
+     style="height: 22px; background: linear-gradient(90deg,#7a1dd8,#792fb9);">
+</div>
+
+
+<style>
+
+.header-bar {
+    background: linear-gradient(90deg, #4b0082, #7a1dd8, #b460ff);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.5);
+}
+
+/* Gradient card header */
+.gradient-bg {
+    background: linear-gradient(90deg, #4b0082, #7a1dd8, #b460ff);
+}
+</style>
+
+{% endblock %}
+
+{% block script %}
+{% include "script.html" %}
+<script defer type="module" src="/js/listacliente.js"></script>
+{% endblock %}

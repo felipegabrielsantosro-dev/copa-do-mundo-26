@@ -1,0 +1,247 @@
+{% extends "main.html" %}
+
+{% block main %}
+
+<style>
+/* ====== Tema Flamengo (sem escudo) ====== */
+body {
+    background: linear-gradient(180deg, #000 0%, #111 50%, #c8102e 100%);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Faixa superior estilo UrubuDoPix */
+.header-bar {
+    background: repeating-linear-gradient(
+        90deg,
+        #c8102e 0 100px,
+        #000 100px 200px
+    );
+    height: 60px; /* maior para destaque */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
+
+/* Container principal */
+.container {
+    margin-top: 40px;
+}
+
+/* Card */
+.card {
+    background-color: rgba(20, 20, 20, 0.95);
+    border: 2px solid #c8102e;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(200, 16, 46, 0.6);
+    overflow: hidden;
+}
+
+/* Cabeçalho do card */
+.card-header {
+    background: linear-gradient(90deg, #c8102e 0%, #000 100%);
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: right;
+    padding: 15px;
+    border-bottom: 2px solid #c8102e;
+}
+
+/* Botão cadastrar */
+.card-header .btn {
+    background-color: #c8102e;
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.card-header .btn:hover {
+    background-color: #000;
+    color: #c8102e;
+    border: 1px solid #c8102e;
+}
+
+/* Rodapé (tabela) */
+.card-footer {
+    background-color: #111;
+    padding: 20px;
+}
+
+/* Tabela */
+.table {
+    width: 100%;
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+
+.table thead {
+    background-color: #c8102e;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.table tbody tr {
+    background-color: #1a1a1a;
+    transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #2a2a2a;
+}
+
+/* Bordas da tabela */
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #c8102e;
+}
+
+/* ===== BOTÕES DE AÇÃO ===== */
+.acoes {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Botões base */
+.btn-acao {
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ícones dentro dos botões */
+.btn-acao i {
+    margin-right: 5px;
+}
+
+/* Botão editar */
+.btn-editar {
+    background-color: #c8102e;
+    border: 1px solid #c8102e;
+}
+.btn-editar:hover {
+    background-color: #000;
+    color: #c8102e;
+    border: 1px solid #c8102e;
+}
+
+/* Botão excluir */
+.btn-excluir {
+    background-color: #000;
+    border: 1px solid #c8102e;
+}
+.btn-excluir:hover {
+    background-color: #c8102e;
+    color: #fff;
+}
+
+/* Links */
+a {
+    color: #c8102e;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+}
+
+/* Rodapé de página */
+.footer-bar {
+    background: repeating-linear-gradient(
+        90deg,
+        #000 0 100px,
+        #c8102e 100px 200px
+    );
+    height: 20px;
+    width: 100%;
+    margin-top: 40px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.6);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .table thead {
+        display: none;
+    }
+    .table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 2px solid #c8102e;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+    }
+    .table tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #c8102e;
+    }
+}
+</style>
+
+<!-- Header UrubuDoPix -->
+<div class="header-bar">
+    UrubuDoPix 🏆
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <a href="/empresa/cadastro" class="btn btn-outline-success">Cadastrar</a>
+                </div>
+
+                <div class="card-footer">
+                    <table id="tabela" class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nome ou Nome fantasia</th>
+                                <th>Sobrenome ou razão social</th>
+                                <th>CPF ou CNPJ</th>
+                                <th>RG ou IE</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Faixa inferior rubro-negra -->
+<div class="footer-bar"></div>
+
+{% endblock %}
+{% block script %}
+{% include "script.html" %}
+<script defer type="module" src="/js/listaempresa.js"></script>
+{% endblock %}
