@@ -1,202 +1,166 @@
 {% extends "main.html" %}
-
 {% block main %}
+<div class="container my-4">
 
-<style>
-/* ====== Tema UrubuDoPix ====== */
-/* Mesma estilização do formulário de usuários */
-:root {
-    --udp-vermelho: #ff001e;
-    --udp-laranja: #ff7f00;
-    --udp-preto: #000;
-    --udp-cinza: #111;
-    --udp-branco: #fff;
-}
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-warning d-flex align-items-center gap-2">
+            <i class="fas fa-truck"></i>
+            <h5 class="mb-0">Gerenciamento de Fornecedor</h5>
+        </div>
 
-body {
-    background: linear-gradient(180deg, var(--udp-preto) 0%, var(--udp-cinza) 50%, var(--udp-vermelho) 100%);
-    color: var(--udp-branco);
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-}
+        <div class="card-body">
 
-.header-bar {
-    background: linear-gradient(90deg, var(--udp-vermelho) 0%, var(--udp-laranja) 25%, var(--udp-preto) 50%, var(--udp-laranja) 75%, var(--udp-vermelho) 100%);
-    height: 30px;
-    width: 100%;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.6);
-}
+            <form id="form">
 
-.container {
-    margin-top: 50px;
-}
+                <!-- Ação e ID -->
+                <input type="hidden" id="acao" name="acao" value="{{ acao }}">
+                <input type="hidden" id="id" name="id" value="{{ id }}">
 
-.card {
-    background-color: rgba(20, 20, 20, 0.95);
-    border: 2px solid var(--udp-vermelho);
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255,0,30,0.6);
-    overflow: hidden;
-}
+                <!-- NAV TABS -->
+                <ul class="nav nav-pills mb-4" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active d-flex align-items-center gap-2"
+                                id="home-tab" data-bs-toggle="tab" 
+                                data-bs-target="#dados" type="button" role="tab">
+                            <i class="fas fa-info-circle"></i> Dados
+                        </button>
+                    </li>
 
-.card-header {
-    background: linear-gradient(90deg, var(--udp-vermelho) 0%, var(--udp-preto) 100%);
-    color: var(--udp-branco);
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 15px;
-    border-bottom: 2px solid var(--udp-vermelho);
-    display: flex;
-    justify-content: flex-end;
-}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link d-flex align-items-center gap-2"
+                                id="endereco-tab" data-bs-toggle="tab"
+                                data-bs-target="#endereco" type="button" role="tab">
+                            <i class="fas fa-map-marker-alt"></i> Endereço
+                        </button>
+                    </li>
 
-.card-header .btn {
-    background-color: transparent;
-    border: 1px solid var(--udp-laranja);
-    color: var(--udp-laranja);
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link d-flex align-items-center gap-2"
+                                id="contato-tab" data-bs-toggle="tab"
+                                data-bs-target="#contato" type="button" role="tab">
+                            <i class="fas fa-phone"></i> Contato
+                        </button>
+                    </li>
+                </ul>
 
-.card-header .btn:hover {
-    background-color: var(--udp-laranja);
-    color: var(--udp-preto);
-}
+                <!-- TABS CONTENT -->
+                <div class="tab-content mt-3" id="myTabContent">
 
-.card-body {
-    background-color: var(--udp-cinza);
-    padding: 30px;
-}
+                    <!-- DADOS DO FORNECEDOR -->
+                    <div class="tab-pane fade show active" id="dados">
+                        <div class="card border-0 shadow-sm p-4">
 
-.form-floating label {
-    color: var(--udp-vermelho);
-}
+                            <div class="row g-3">
 
-.form-control {
-    background-color: #1a1a1a;
-    color: var(--udp-branco);
-    border: 1px solid var(--udp-vermelho);
-    border-radius: 6px;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    background-color: var(--udp-preto);
-    border-color: var(--udp-laranja);
-    box-shadow: 0 0 10px rgba(255,0,30,0.6);
-    color: var(--udp-branco);
-}
-
-.form-control::placeholder {
-    color: transparent;
-}
-
-.card-footer {
-    background-color: var(--udp-preto);
-    padding: 15px;
-    text-align: right;
-    border-top: 2px solid var(--udp-vermelho);
-}
-
-#salvar {
-    background-color: var(--udp-vermelho);
-    color: var(--udp-branco);
-    border: 1px solid var(--udp-vermelho);
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-}
-
-#salvar:hover {
-    background-color: var(--udp-preto);
-    color: var(--udp-vermelho);
-    border-color: var(--udp-vermelho);
-}
-
-.footer-bar {
-    background: linear-gradient(90deg, var(--udp-preto) 0%, var(--udp-laranja) 25%, var(--udp-vermelho) 50%, var(--udp-laranja) 75%, var(--udp-preto) 100%);
-    height: 25px;
-    width: 100%;
-    margin-top: 40px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.6);
-}
-
-@media (max-width: 768px) {
-    .card-body {
-        padding: 20px;
-    }
-    .form-floating {
-        margin-bottom: 15px;
-    }
-}
-</style>
-
-<div class="header-bar"></div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <a href="/fornecedor/lista" class="btn btn-outline-warning">Voltar</a>
-                </div>
-                <div class="card-body">
-                    <form id="form">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome fantasia" required>
-                                    <label for="nome">Nome ou Nome Fantasia *</label>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-user"></i> Nome do Fornecedor
+                                    </label>
+                                    <input type="text" class="form-control" id="nome" name="nome"
+                                           placeholder="Digite o nome"
+                                           value="{{ fornecedor.nome if fornecedor else '' }}" required>
                                 </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="Razão social" required>
-                                    <label for="sobrenome">Sobrenome ou Razão Social*</label>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-file-alt"></i> CNPJ/CPF
+                                    </label>
+                                    <input type="text" class="form-control" id="documento" name="documento"
+                                           placeholder="Digite o CNPJ/CPF"
+                                           value="{{ fornecedor.documento if fornecedor else '' }}" required>
                                 </div>
+
                             </div>
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="cpf" name="cpf" placeholder="cpf" required>
-                                    <label for="cpf">CPF *</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="rg" name="rg" placeholder="Inscrição Estadual" required>
-                                    <label for="rg">RG *</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
-                                    <label for="email">E-mail *</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="celular" name="celular" placeholder="Celular" required>
-                                    <label for="celular">Celular*</label>
-                                </div>
-                            </div>
+
                         </div>
-                    </form>
+                    </div>
+
+                    <!-- ENDEREÇO -->
+                    <div class="tab-pane fade" id="endereco">
+                        <div class="card border-0 shadow-sm p-4">
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-road"></i> Rua
+                                    </label>
+                                    <input type="text" class="form-control" id="rua" name="rua"
+                                           placeholder="Rua"
+                                           value="{{ fornecedor.rua if fornecedor else '' }}">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-home"></i> Número
+                                    </label>
+                                    <input type="text" class="form-control" id="numero" name="numero"
+                                           placeholder="Número"
+                                           value="{{ fornecedor.numero if fornecedor else '' }}">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        <i class="fas fa-mail-bulk"></i> CEP
+                                    </label>
+                                    <input type="text" class="form-control" id="cep" name="cep"
+                                           placeholder="CEP"
+                                           value="{{ fornecedor.cep if fornecedor else '' }}">
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- CONTATO -->
+                    <div class="tab-pane fade" id="contato">
+                        <div class="card border-0 shadow-sm p-4">
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-phone"></i> Telefone
+                                    </label>
+                                    <input type="text" class="form-control" id="telefone" name="telefone"
+                                           placeholder="Telefone"
+                                           value="{{ fornecedor.telefone if fornecedor else '' }}">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        <i class="fas fa-envelope"></i> Email
+                                    </label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           placeholder="Email"
+                                           value="{{ fornecedor.email if fornecedor else '' }}">
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
-                <div class="card-footer">
-                    <button id="salvar" class="btn" onclick="salvar">Salvar </button>
+
+                <!-- BOTÃO SALVAR -->
+                <div class="d-grid mt-4">
+                    <button class="btn btn-success btn-lg d-flex justify-content-center align-items-center gap-2"
+                            type="button" id="salvar">
+                        <i class="fas fa-save"></i> Salvar
+                    </button>
                 </div>
-            </div>
+
+            </form>
+
         </div>
     </div>
+
 </div>
-
-<div class="footer-bar"></div>
-
 {% endblock %}
 
 {% block script %}
 {% include "script.html" %}
-<script type="module" defer src="/js/fornecedor.js"></script>
+<script defer type="module" src="/js/fornecedor.js"></script>
 {% endblock %}
