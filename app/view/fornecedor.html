@@ -1,144 +1,115 @@
 {% extends "main.html" %}
+
 {% block main %}
 <div class="container my-4">
-
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-warning d-flex align-items-center gap-2">
-            <i class="fas fa-truck"></i>
-            <h5 class="mb-0">Gerenciamento de Fornecedor</h5>
-        </div>
-
-        <div class="card-body">
-
-            <form id="form">
-
-                <!-- Ação e ID -->
+    <form id="form">
+        <input type="hidden" id="id" name="id">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
+                <i class="fas fa-truck"></i>
+                <h5 class="mb-0">Gerenciamento de Fornecedor</h5>
+            </div>
+            <div class="card-body">
                 <input type="hidden" id="acao" name="acao" value="{{ acao }}">
-                <input type="hidden" id="id" name="id" value="{{ id }}">
 
                 <!-- NAV TABS -->
                 <ul class="nav nav-pills mb-4" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active d-flex align-items-center gap-2"
-                                id="home-tab" data-bs-toggle="tab" 
-                                data-bs-target="#dados" type="button" role="tab">
-                            <i class="fas fa-info-circle"></i> Dados
+                        <button class="nav-link active d-flex align-items-center gap-2" id="home-tab"
+                            data-bs-toggle="tab" data-bs-target="#dados" type="button" role="tab">
+                            <i class="fas fa-file-signature"></i> Dados do Fornecedor
                         </button>
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link d-flex align-items-center gap-2"
-                                id="endereco-tab" data-bs-toggle="tab"
-                                data-bs-target="#endereco" type="button" role="tab">
+                        <button class="nav-link d-flex align-items-center gap-2" id="address-tab" data-bs-toggle="tab"
+                            data-bs-target="#endereco" type="button" role="tab">
                             <i class="fas fa-map-marker-alt"></i> Endereço
                         </button>
                     </li>
 
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link d-flex align-items-center gap-2"
-                                id="contato-tab" data-bs-toggle="tab"
-                                data-bs-target="#contato" type="button" role="tab">
+                        <button class="nav-link d-flex align-items-center gap-2" id="contact-tab" data-bs-toggle="tab"
+                            data-bs-target="#contato" type="button" role="tab">
                             <i class="fas fa-phone"></i> Contato
                         </button>
                     </li>
                 </ul>
 
-                <!-- TABS CONTENT -->
+                <!-- TAB CONTENT -->
                 <div class="tab-content mt-3" id="myTabContent">
 
                     <!-- DADOS DO FORNECEDOR -->
                     <div class="tab-pane fade show active" id="dados">
-                        <div class="card border-0 shadow-sm p-4">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body">
+                                <div class="row g-3">
 
-                            <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="nome_fantasia" class="form-label">
+                                            <i class="fas fa-store"></i> Nome Fantasia
+                                        </label>
+                                        <input type="text" class="form-control" id="nome_fantasia" name="nome_fantasia"
+                                            placeholder="Digite o nome fantasia" value="{{ fornecedor.nome_fantasia }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="razao_social" class="form-label">
+                                            <i class="fas fa-building"></i> Razão Social
+                                        </label>
+                                        <input type="text" class="form-control" id="razao_social" name="razao_social"
+                                            placeholder="Digite a razão social" required
+                                            value="{{ fornecedor.razao_social }}">
+                                    </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="fas fa-user"></i> Nome do Fornecedor
-                                    </label>
-                                    <input type="text" class="form-control" id="nome" name="nome"
-                                           placeholder="Digite o nome"
-                                           value="{{ fornecedor.nome if fornecedor else '' }}" required>
+
+                                    <div class="col-md-4">
+                                        <label for="cnpj" class="form-label">
+                                            <i class="fas fa-id-card"></i> CNPJ
+                                        </label>
+                                        <input type="text" class="form-control" id="cpf_cnpj" name="cpf_cnpj"
+                                            placeholder="Digite o CNPJ" required value="{{ fornecedor.cpf_cnpj }}">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="inscricao_estadual" class="form-label">
+                                            <i class="fas fa-file-invoice"></i> Inscrição Estadual
+                                        </label>
+                                        <input type="text" class="form-control" id="rg_ie" name="rg_ie"
+                                            placeholder="Digite a IE" value="{{ fornecedor.rg_ie }}">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Status</label>
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" id="ativo" name="ativo" {%
+                                                if fornecedor.ativo %} checked {% endif %}>
+                                            <label class="form-check-label" for="ativo">
+                                                <i class="fas fa-check-circle text-success"></i> Ativo
+                                            </label>
+                                        </div>
+                                    </div>
+
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="fas fa-file-alt"></i> CNPJ/CPF
-                                    </label>
-                                    <input type="text" class="form-control" id="documento" name="documento"
-                                           placeholder="Digite o CNPJ/CPF"
-                                           value="{{ fornecedor.documento if fornecedor else '' }}" required>
-                                </div>
-
                             </div>
-
                         </div>
                     </div>
 
                     <!-- ENDEREÇO -->
                     <div class="tab-pane fade" id="endereco">
                         <div class="card border-0 shadow-sm p-4">
-
-                            <div class="row g-3">
-
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="fas fa-road"></i> Rua
-                                    </label>
-                                    <input type="text" class="form-control" id="rua" name="rua"
-                                           placeholder="Rua"
-                                           value="{{ fornecedor.rua if fornecedor else '' }}">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        <i class="fas fa-home"></i> Número
-                                    </label>
-                                    <input type="text" class="form-control" id="numero" name="numero"
-                                           placeholder="Número"
-                                           value="{{ fornecedor.numero if fornecedor else '' }}">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label">
-                                        <i class="fas fa-mail-bulk"></i> CEP
-                                    </label>
-                                    <input type="text" class="form-control" id="cep" name="cep"
-                                           placeholder="CEP"
-                                           value="{{ fornecedor.cep if fornecedor else '' }}">
-                                </div>
-
+                            <h5><i class="fas fa-map"></i> Dados do endereço</h5>
+                            <div class="row g-3 mt-2">   
                             </div>
-
                         </div>
                     </div>
 
                     <!-- CONTATO -->
                     <div class="tab-pane fade" id="contato">
                         <div class="card border-0 shadow-sm p-4">
+                            <h5><i class="fas fa-phone-alt"></i> Dados de contato</h5>
 
-                            <div class="row g-3">
-
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="fas fa-phone"></i> Telefone
-                                    </label>
-                                    <input type="text" class="form-control" id="telefone" name="telefone"
-                                           placeholder="Telefone"
-                                           value="{{ fornecedor.telefone if fornecedor else '' }}">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="fas fa-envelope"></i> Email
-                                    </label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                           placeholder="Email"
-                                           value="{{ fornecedor.email if fornecedor else '' }}">
-                                </div>
-
+                            <div class="row g-3 mt-2">
                             </div>
-
                         </div>
                     </div>
 
@@ -147,19 +118,15 @@
                 <!-- BOTÃO SALVAR -->
                 <div class="d-grid mt-4">
                     <button class="btn btn-success btn-lg d-flex justify-content-center align-items-center gap-2"
-                            type="button" id="salvar">
+                        type="button" id="salvar">
                         <i class="fas fa-save"></i> Salvar
                     </button>
                 </div>
-
-            </form>
-
+            </div>
         </div>
-    </div>
-
+    </form>
 </div>
 {% endblock %}
-
 {% block script %}
 {% include "script.html" %}
 <script defer type="module" src="/js/fornecedor.js"></script>

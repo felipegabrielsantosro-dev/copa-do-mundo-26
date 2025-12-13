@@ -2,39 +2,39 @@
 {% block main %}
 <form id="form">
     <input type="hidden" id="id" name="id">
-<div class="container my-4">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 d-flex align-items-center gap-2">
-                <i class="fas fa-building"></i> Lista de Empresas
-            </h5>
+    <div class="container my-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 d-flex align-items-center gap-2">
+                    <i class="fas fa-building"></i> Lista de Empresas
+                </h5>
 
-            <a href="/empresa/cadastro" class="btn btn-success d-flex align-items-center gap-2">
-                <i class="fas fa-plus"></i> Cadastrar
-            </a>
-        </div>
+                <a href="/empresa/cadastro" class="btn btn-success d-flex align-items-center gap-2">
+                    <i class="fas fa-plus"></i> Cadastrar
+                </a>
+            </div>
 
-        <div class="card-body">
-            <table class="table table-hover align-middle" id="tabela">
-                <thead class="table-light">
-                    <tr>
-                        <th><i class="fas fa-hashtag"></i> Código</th>
-                        <th><i class="fas fa-building"></i> Razão Social</th>
-                        <th><i class="fas fa-id-card"></i> CNPJ</th>
-                        <th><i class="fas fa-map-marker-alt"></i> Cidade</th>
-                        <th><i class="fas fa-check-circle"></i> Status</th>
-                        <th class="text-center"><i class="fas fa-cogs"></i> Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+            <div class="card-body">
+                <table class="table table-hover align-middle" id="tabela">
+                    <thead class="table-light">
+                        <tr>
+                            <th><i class="fas fa-hashtag"></i> Código</th>
+                            <th><i class="fas fa-building"></i> Razão Social</th>
+                            <th><i class="fas fa-id-card"></i> CNPJ</th>
+                            <th><i class="fas fa-map-marker-alt"></i> Cidade</th>
+                            <th><i class="fas fa-check-circle"></i> Status</th>
+                            <th class="text-center"><i class="fas fa-cogs"></i> Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+</form>
 {% endblock %}
-
 {% block script %}
 {% include "script.html" %}
-<script defer type="module" src="/js/listempresa.js"></script>
+<script defer type="module" src="/js/listaempresa.js"></script>
 {% endblock %}

@@ -12,57 +12,64 @@ class Cliente extends Base
     {
         try {
             $dadosTemplate = [
-                'titulo' => 'Página inicial'
+                'titulo' => 'Lista de Clientes'
             ];
+
             return $this->getTwig()
                 ->render($response, $this->setView('listcliente'), $dadosTemplate)
                 ->withHeader('Content-Type', 'text/html')
                 ->withStatus(200);
+
         } catch (\Exception $e) {
+            echo "Erro: " . $e->getMessage();
         }
     }
     public function cadastro($request, $response)
     {
         try {
             $dadosTemplate = [
-                'titulo' => 'Página inicial'
+                'titulo' => 'Cadastro de Cliente'
             ];
+
             return $this->getTwig()
                 ->render($response, $this->setView('cliente'), $dadosTemplate)
                 ->withHeader('Content-Type', 'text/html')
                 ->withStatus(200);
+
         } catch (\Exception $e) {
+            echo "Erro: " . $e->getMessage();
         }
     }
     public function insert($request, $response)
     {
         try {
-            $nome = $_POST['nome'];
-            $sobrenome = $_POST['sobrenome'];
-            $cpf = $_POST['cpf'];
-            $rg = $_POST['rg'];
-            
-            
-            $FieldsAndValues = [
-                'nome_fantasia' => $nome,
-                'sobrenome_razao' => $sobrenome,
-                'cpf_cnpj' => $cpf,
-                'rg_ie' => $rg,
+            $nome      = $_POST['nome'] ?? null;
+            $sobrenome = $_POST['sobrenome'] ?? null;
+            $cpf       = $_POST['cpf'] ?? null;
+            $rg        = $_POST['rg'] ?? null;
 
+            $FieldsAndValues = [
+                'nome_completo'   => $nome_completo = $nome . ' ' . $sobrenome,
+                'cpf_cnpj'        => $cpf,
+                'rg_ie'           => $rg,
             ];
 
             $IsSave = InsertQuery::table('cliente')->save($FieldsAndValues);
+
             if (!$IsSave) {
                 echo 'Erro ao salvar';
                 die;
             }
+
             echo "Salvo com sucesso!";
             die;
+
         } catch (\Throwable $th) {
-            //throw $th;
+            echo "Erro: " . $th->getMessage();
+            die;
         }
     }
-    public function delete($request, $response)
+    public function Delete($request, $response)
     {
         try {
             $id = $_POST['id'];
@@ -71,68 +78,84 @@ class Cliente extends Base
                 ->delete();
 
             if (!$IsDelete) {
-                echo 'Erro ao deletar';
+                echo json_encode(['status' => false, 'msg' => $IsDelete, 'id' => $id]);
                 die;
             }
-            echo "Deletado com sucesso!";
+            echo json_encode(['status' => true, 'msg' => 'Removido com sucesso!', 'id' => $id]);
             die;
         } catch (\Throwable $th) {
             echo "Erro: " . $th->getMessage();
             die;
         }
     }
-        public function listcliente($request, $response){
-        #Captura todas a variaveis de forma mais segura VARIAVEIS POST.
+    public function listcliente($request, $response)
+    {
         $form = $request->getParsedBody();
-        #Qual a coluna da tabela deve ser ordenada.
-        $order = $form['order'][0]['column'];
-        #Tipo de ordenação
+
+        # Campos e ordenação
+        $order     = $form['order'][0]['column'];
         $orderType = $form['order'][0]['dir'];
-        #Em qual registro se inicia o retorno dos registros, OFFSET
-        $start = $form['start'];
-        #Limite de registro a serem retornados do banco de dados LIMIT
-        $length = $form['length'];
-        $fields= [
-          0 => 'id',  
-          1 => 'nome_fantasia',  
-          2 => 'sobrenome_razao',  
-          3 => 'cpf_cnpj',  
-          4 => 'rg_ie',
+        $start     = $form['start'];
+        $length    = $form['length'];
+
+        $fields = [
+            0 => 'id',
+            1 => 'nome_completo',
+            2 => 'cpf_cnpj',
+            3 => 'rg_ie'
         ];
-        #Capturamos o nome do campo a ser odernado.
+
         $orderField = $fields[$order];
-        #O termo pesquisado
-        $term = $form ['search']['value'];
-        $query = SelectQuery::select('id,nome_fantasia,sobrenome_razao,cpf_cnpj,rg_ie')->from('cliente');
-        if (!is_null($term) && ($term !== '')) {
-            $query->where('nome_fantasia', 'ilike', "%{$term}%", 'or')
-            ->where('sobrenome_razao', 'ilike', "%{$term}%", 'or')
-            ->where('cpf_cnpj', 'ilike', "%{$term}%", 'or')
-            ->where('rg_ie', 'ilike', "%{$term}%");
-            
+        $term       = $form['search']['value'];
+
+        # Query base
+        $query = SelectQuery::select('id,nome_completo,cpf_cnpj,rg_ie')
+            ->from('cliente');
+
+        # Filtro
+        if (!is_null($term) && $term !== '') {
+            $query->where('nome_completo', 'ilike', "%{$term}%", 'or')
+                ->where('cpf_cnpj', 'ilike', "%{$term}%", 'or')
+                ->where('rg_ie', 'ilike', "%{$term}%");
         }
+
+        # Paginação + ordenação
         $clients = $query
-        ->order($orderField, $orderType)
-        ->limit($length, $start)
-        ->fetchAll();
+            ->order($orderField, $orderType)
+            ->limit($length, $start)
+            ->fetchAll();
+
+        # Monta array nos padrões DataTables
         $clientsData = [];
-        foreach($clients as $key => $value) {
+
+        foreach ($clients as $key => $value) {
             $clientsData[$key] = [
                 $value['id'],
-                $value['nome_fantasia'],
-                $value['sobrenome_razao'],
+                $value['nome_completo'],
                 $value['cpf_cnpj'],
                 $value['rg_ie'],
-                "<button class='btn btn-warning'>Editar</button>
-                <button class='btn btn-danger'>Excluir</button>"
+
+                // Botões de ação
+                "
+                <button type='button' onclick='Editar({$value['id']});' class='btn btn-warning'>
+                    <i class=\"bi bi-pen-fill\"></i> Editar
+                </button>
+
+                <button type='button' onclick='Delete({$value['id']});' class='btn btn-danger'>
+                    <i class=\"bi bi-trash-fill\"></i> Excluir
+                </button>
+                "
             ];
         }
+
+        # Resposta
         $data = [
-            'status' => true,
-            'recordsTotal' => count($clients),
+            'status'          => true,
+            'recordsTotal'    => count($clients),
             'recordsFiltered' => count($clients),
-            'data' => $clientsData
+            'data'            => $clientsData
         ];
+
         $payload = json_encode($data);
 
         $response->getBody()->write($payload);

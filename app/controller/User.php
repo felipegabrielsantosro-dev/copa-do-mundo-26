@@ -126,7 +126,7 @@ class User extends Base
             ->withStatus(200);
     }
 
-    public function delete($request, $response)
+    public function Delete($request, $response)
     {
         try {
             $id = $_POST['id'];

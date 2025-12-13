@@ -4,6 +4,7 @@ namespace app\controller;
 
 use app\database\builder\InsertQuery;
 use app\database\builder\SelectQuery;
+use app\database\builder\DeleteQuery;
 
 class Empresa extends Base
 {
@@ -39,7 +40,7 @@ class Empresa extends Base
             
             $FieldsAndValues = [
                 'nome_fantasia' => $nome,
-                'sobrenome_razao' => $sobrenome,
+                'razao_social' => $sobrenome,
                 'cpf_cnpj' => $cpf,
                 'rg_ie' => $rg
             ];
@@ -55,7 +56,26 @@ class Empresa extends Base
             //throw $th;
         }
     }
-        public function listempresa($request, $response){
+     public function Delete($request, $response)
+    {
+        try {
+            $id = $_POST['id'];
+            $IsDelete = DeleteQuery::table('empresa')
+                ->where('id', '=', $id)
+                ->delete();
+
+            if (!$IsDelete) {
+                echo json_encode(['status' => false, 'msg' => $IsDelete, 'id' => $id]);
+                die;
+            }
+            echo json_encode(['status' => true, 'msg' => 'Removido com sucesso!', 'id' => $id]);
+            die;
+        } catch (\Throwable $th) {
+            echo "Erro: " . $th->getMessage();
+            die;
+        }
+    }
+    public function listempresa($request, $response){
         #Captura todas a variaveis de forma mais segura VARIAVEIS POST.
         $form = $request->getParsedBody();
         #Qual a coluna da tabela deve ser ordenada.
@@ -69,7 +89,7 @@ class Empresa extends Base
         $fields= [
           0 => 'id',  
           1 => 'nome_fantasia',  
-          2 => 'sobrenome_razao',  
+          2 => 'razao_social',  
           3 => 'cpf_cnpj',  
           4 => 'rg_ie',
         ];
@@ -77,10 +97,10 @@ class Empresa extends Base
         $orderField = $fields[$order];
         #O termo pesquisado
         $term = $form ['search']['value'];
-        $query = SelectQuery::select('id,nome_fantasia,sobrenome_razao,cpf_cnpj,rg_ie')->from('empresa');
+        $query = SelectQuery::select('id,nome_fantasia,razao_social,cpf_cnpj,rg_ie')->from('empresa');
         if (!is_null($term) && ($term !== '')) {
             $query->where('nome_fantasia', 'ilike', "%{$term}%", 'or')
-            ->where('sobrenome_razao', 'ilike', "%{$term}%", 'or')
+            ->where('razao_social', 'ilike', "%{$term}%", 'or')
             ->where('cpf_cnpj', 'ilike', "%{$term}%", 'or')
             ->where('rg_ie', 'ilike', "%{$term}%");
         }
@@ -93,11 +113,18 @@ class Empresa extends Base
             $empresaData[$key] = [
                 $value['id'],
                 $value['nome_fantasia'],
-                $value['sobrenome_razao'],
+                $value['razao_social'],
                 $value['cpf_cnpj'],
                 $value['rg_ie'],
-                "<button class='btn btn-warning'>Editar</button>
-                <button class='btn btn-danger'>Excluir</button>"
+                "<button type='button' onclick='Editar(" . $value['id'] . ");' class='btn btn-warning'>
+                <i class=\"bi bi-pen-fill\"></i>
+                Editar
+                </button>
+
+                 <button type='button'  onclick='Delete(" . $value['id'] . ");' class='btn btn-danger'>
+                 <i class=\"bi bi-trash-fill\"></i>
+                 Excluir
+                 </button>"
             ];
         }
         $data = [
