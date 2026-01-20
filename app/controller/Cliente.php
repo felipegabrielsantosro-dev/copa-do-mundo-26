@@ -164,4 +164,23 @@ class Cliente extends Base
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
     }
+     public function alterar($request, $response, $args)
+    {
+        try {
+            $id = $args['id'];
+            $user = SelectQuery::select()->from('usuario')->where('id', '=', $id)->fetch();
+            $dadosTemplate = [
+                'acao' => 'e',
+                'id' => $id,
+                'titulo' => 'Cadastro e edição',
+                'user' => $user
+            ];
+            return $this->getTwig()
+                ->render($response, $this->setView('user'), $dadosTemplate)
+                ->withHeader('Content-Type', 'text/html')
+                ->withStatus(200);
+        } catch (\Exception $e) {
+            var_dump($e);
+        }
+    }
 }

@@ -22,10 +22,13 @@ const tabela = new $('#tabela').DataTable({
     }
 });
 
+// ================= DELETE =================
 async function Delete(id) {
     document.getElementById('id').value = id;
 
-    const response = await Requests.SetForm('form').Post('/empresa/delete');
+    const response = await Requests
+        .SetForm('form')
+        .Post('/empresa/delete');
 
     if (!response.status) {
         Swal.fire({
@@ -34,9 +37,7 @@ async function Delete(id) {
             html: response.msg,
             timer: 3000,
             timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => Swal.showLoading()
         });
         return;
     }
@@ -47,12 +48,18 @@ async function Delete(id) {
         html: response.msg,
         timer: 3000,
         timerProgressBar: true,
-        didOpen: () => {
-            Swal.showLoading();
-        }
+        didOpen: () => Swal.showLoading()
     });
 
     tabela.ajax.reload();
 }
 
+// ================= EDITAR =================
+function Editar(id) {
+    // redireciona para a tela de edição da empresa
+    window.location.href = `/empresa/editar/${id}`;
+}
+
+// expõe as funções para o HTML
 window.Delete = Delete;
+window.Editar = Editar;

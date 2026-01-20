@@ -30,6 +30,7 @@ $app->group('/usuario', function (RouteCollectorProxy $group) {
     $group->post('/listuser', User::class . ':listuser');
     $group->post('/insert', User::class . ':insert');
     $group->post('/delete', User::class . ':delete');
+     $group->post('/editar', User::class . ':editar');
 });
 
 $app->group('/cliente', function (RouteCollectorProxy $group) {

@@ -22,10 +22,17 @@ const tabela = new $('#tabela').DataTable({
     }
 });
 
+// ================= DELETE =================
 async function Delete(id) {
-    document.getElementById('id').value = id;
 
-    const response = await Requests.SetForm('form').Post('/fornecedor/delete');
+    const inputId = document.getElementById('id');
+    if (inputId) {
+        inputId.value = id;
+    }
+
+    const response = await Requests
+        .SetForm('form')
+        .Post('/fornecedor/delete');
 
     if (!response.status) {
         Swal.fire({
@@ -34,9 +41,7 @@ async function Delete(id) {
             html: response.msg,
             timer: 3000,
             timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => Swal.showLoading()
         });
         return;
     }
@@ -47,12 +52,17 @@ async function Delete(id) {
         html: response.msg,
         timer: 3000,
         timerProgressBar: true,
-        didOpen: () => {
-            Swal.showLoading();
-        }
+        didOpen: () => Swal.showLoading()
     });
 
     tabela.ajax.reload();
 }
 
+// ================= EDITAR =================
+function Editar(id) {
+    window.location.href = `/fornecedor/editar/${id}`;
+}
+
+// expõe para o HTML
 window.Delete = Delete;
+window.Editar = Editar;

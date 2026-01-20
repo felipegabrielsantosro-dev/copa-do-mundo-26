@@ -15,8 +15,8 @@ try {
     } else {
         console.warn('Inputmask não encontrado (jQuery/inputmask). Se usa máscaras, verifique inclusão do plugin.');
     }
-} catch (err) {
-    console.error('Erro ao inicializar inputmask', err);
+} catch (error) {
+    console.error('Erro ao inicializar inputmask', error);
 }
 
 // --- utilitários ---
@@ -25,8 +25,8 @@ function limparBackdrop() {
         document.querySelectorAll(".modal-backdrop").forEach(e => e.remove());
         document.body.classList.remove("modal-open");
         document.body.style.overflow = "";
-    } catch (err) {
-        console.error('Erro ao limpar backdrop:', err);
+    } catch (error) {
+        console.error('Erro ao limpar backdrop:', error);
     }
 }
 
@@ -39,8 +39,8 @@ function fecharModalSeguro(modalId) {
         inst.hide();
         // timeout pequeno para evitar condição de corrida ao remover backdrop
         setTimeout(() => limparBackdrop(), 50);
-    } catch (err) {
-        console.error('Erro ao fechar modal seguro:', err);
+    } catch (error) {
+        console.error('Erro ao fechar modal seguro:', error);
     }
 }
 

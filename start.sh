@@ -79,8 +79,8 @@ sudo -u postgres psql -d "${PG_DB}" <<EOF
         data_alteracao timestamp,
         CONSTRAINT contato_id_usuario_fkey FOREIGN KEY (id_usuario)
             REFERENCES public.usuario (id)
-            ON UPDATE NO ACTION
-            ON DELETE NO ACTION
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
     );
     -- View vw_usuario_contatos
     CREATE OR REPLACE VIEW vw_usuario_contatos AS
