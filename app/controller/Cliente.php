@@ -135,16 +135,12 @@ class Cliente extends Base
                 $value['cpf_cnpj'],
                 $value['rg_ie'],
 
-                // Botões de ação
-                "
-                <button type='button' onclick='Editar({$value['id']});' class='btn btn-warning'>
-                    <i class=\"bi bi-pen-fill\"></i> Editar
-                </button>
+                "<a href=\"/cliente/editar/" . $value['id'] . "\" class=\"btn btn-warning\">Editar</a>
 
-                <button type='button' onclick='Delete({$value['id']});' class='btn btn-danger'>
-                    <i class=\"bi bi-trash-fill\"></i> Excluir
-                </button>
-                "
+                <button type='button'  onclick='Delete(" . $value['id'] . ");' class='btn btn-danger'>
+                 <i class=\"bi bi-trash-fill\"></i>
+                 Excluir
+                 </button>"
             ];
         }
 

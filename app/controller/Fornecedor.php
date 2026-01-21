@@ -115,13 +115,11 @@ class Fornecedor extends Base
                 $value['razao_social'],
                 $value['cpf_cnpj'],
                 $value['rg_ie'],
-                "<button type='button' onclick='Editar(" . $value['id'] . ");' class='btn btn-warning'>
-                    <i class='bi bi-pen-fill'></i>
-                    Editar
-                </button>
-                 <button type='button'  onclick='Delete(" . $value['id'] . ");' class='btn btn-danger'>
-                    <i class='bi bi-trash-fill'></i>
-                    Excluir
+                 "<a href=\"/fornecedor/alterar/" . $value['id'] . "\" class=\"btn btn-warning\">Editar</a>
+
+                <button type='button'  onclick='Delete(" . $value['id'] . ");' class='btn btn-danger'>
+                 <i class=\"bi bi-trash-fill\"></i>
+                 Excluir
                  </button>"
             ];
         }

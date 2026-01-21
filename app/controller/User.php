@@ -22,41 +22,37 @@ class User extends Base
     }
     public function cadastro($request, $response)
     {
-        $dadosTemplate = [
-            'titulo' => 'Cadastro de usuário'
-        ];
-        return $this->getTwig()
-            ->render($response, $this->setView('user'), $dadosTemplate)
-            ->withHeader('Content-Type', 'text/html')
-            ->withStatus(200);
+        try {
+            $dadosTemplate = [
+                'acao' => 'c',
+                'titulo' => 'Cadastro'
+            ];
+            return $this->getTwig()
+                ->render($response, $this->setView('user'), $dadosTemplate)
+                ->withHeader('Content-Type', 'text/html')
+                ->withStatus(200);
+        } catch (\Exception $e) {
+            var_dump($e);
+        }
     }
     public function insert($request, $response)
     {
         try {
-            $nome = $_POST['nome'];
-            $sobrenome = $_POST['sobrenome'];
-            $cpf = $_POST['cpf'];
-            $rg = $_POST['rg'];
-            $senha = $_POST['senha'];
-
-
-            $FieldsAndValues = [
-                'nome' => $nome,
-                'sobrenome' => $sobrenome,
-                'cpf' => $cpf,
-                'rg' => $rg,
-                'senha' => password_hash($senha, PASSWORD_DEFAULT)
+            $form = $request->getParsedBody();
+            $FieldAndValues = [
+                'nome' => $form['nome'],
+                'sobrenome' => $form['sobrenome'],
+                'cpf' => $form['cpf'],
+                'rg' => $form['rg']
             ];
-
-            $IsSave = InsertQuery::table('usuario')->save($FieldsAndValues);
+            $IsSave = InsertQuery::table('usuario')->save($FieldAndValues);
             if (!$IsSave) {
-                echo 'Erro ao salvar';
-                die;
+                return $this->SendJson($response, ['status' => false, 'msg' => 'Restrição: ' . $IsSave, 'id' => 0], 403);
             }
-            echo "Salvo com sucesso!";
-            die;
-        } catch (\Throwable $th) {
-            //throw $th;
+            $user = SelectQuery::select('id')->from('usuario')->order('id', 'desc')->fetch();
+            return $this->SendJson($response, ['status' => true, 'msg' => 'Salvo com sucesso', 'id' => $user['id']], 201);
+        } catch (\Exception $e) {
+            return $this->SendJson($response, ['status' => false, 'msg' => 'Restrição: ' . $e->getMessage(), 'id' => 0], 500);
         }
     }
     public function listuser($request, $response)
@@ -101,15 +97,12 @@ class User extends Base
                 $value['sobrenome'],
                 $value['cpf'],
                 $value['rg'],
-                "<button type='button' onclick='Editar(" . $value['id'] . ");' class='btn btn-warning'>
-                <i class=\"bi bi-pen-fill\"></i>
-                Editar
-                </button>
+                "<a href=\"/usuario/alterar/" . $value['id'] . "\" class=\"btn btn-warning\">Editar</a>
 
-                 <button type='button'  onclick='Delete(" . $value['id'] . ");' class='btn btn-danger'>
-                 <i class=\"bi bi-trash-fill\"></i>
-                 Excluir
-                 </button>"
+                <button type='button'  onclick='Delete(" . $value['id'] . ");' class='btn btn-danger'>
+                <i class=\"bi bi-trash-fill\"></i>
+                Excluir
+                </button>"
             ];
         }
         $data = [
@@ -126,7 +119,26 @@ class User extends Base
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
     }
-    public function Delete($request, $response)
+    public function alterar($request, $response, $args)
+    {
+        try {
+            $id = $args['id'];
+            $user = SelectQuery::select()->from('usuario')->where('id', '=', $id)->fetch();
+            $dadosTemplate = [
+                'acao' => 'e',
+                'id' => $id,
+                'titulo' => 'Cadastro e edição',
+                'user' => $user
+            ];
+            return $this->getTwig()
+                ->render($response, $this->setView('user'), $dadosTemplate)
+                ->withHeader('Content-Type', 'text/html')
+                ->withStatus(200);
+        } catch (\Exception $e) {
+            var_dump($e);
+        }
+    }
+    public function delete($request, $response)
     {
         try {
             $id = $_POST['id'];
@@ -168,23 +180,9 @@ class User extends Base
             return $this->SendJson($response, ['status' => false, 'msg' => 'Restrição: ' . $e->getMessage(), 'id' => 0], 500);
         }
     }
-     public function alterar($request, $response, $args)
-    {
-        try {
-            $id = $args['id'];
-            $user = SelectQuery::select()->from('usuario')->where('id', '=', $id)->fetch();
-            $dadosTemplate = [
-                'acao' => 'e',
-                'id' => $id,
-                'titulo' => 'Cadastro e edição',
-                'user' => $user
-            ];
-            return $this->getTwig()
-                ->render($response, $this->setView('user'), $dadosTemplate)
-                ->withHeader('Content-Type', 'text/html')
-                ->withStatus(200);
-        } catch (\Exception $e) {
-            var_dump($e);
-        }
-    }
 }
+
+         /*"<button type='button'  onclick='Editar(" . $value['id'] . ");' class='btn btn-warning'>
+         <i class=\"bi bi-pen-fill\"></i>
+         Editar
+         </button> */
